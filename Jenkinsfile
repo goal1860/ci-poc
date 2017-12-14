@@ -14,9 +14,9 @@ pipeline {
       }
     }
     stage('Functional Test') {
-        steps {
-            sh "'${mvnHome}/bin/mvn' clean test"
-        }
+      steps {
+        sh "'${mvnHome}/bin/mvn' clean test"
+      }
     }
   }
 }
