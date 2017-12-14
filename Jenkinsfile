@@ -9,9 +9,12 @@ pipeline {
     stage('Deploy to RC') {
       steps {
         sh '''echo "Deploying to RC."
-echo "Doing health check..."
-echo "Deployed successfully."'''
+        echo "Doing health check..."
+        echo "Deployed successfully."'''
       }
+    }
+    stage('Functional Test') {
+        sh "'${mvnHome}/bin/mvn' clean test"
     }
   }
 }
