@@ -42,5 +42,15 @@ pipeline {
         input(message: 'Can we approve dependency tests?', ok: 'Approve')
       }
     }
+    stage('Performance Tests') {
+      steps {
+        sh 'echo "Running performance tests"'
+      }
+    }
+    stage('Approve Performance Tests') {
+      steps {
+        input(message: 'Do we approve the performance test rusult?', ok: 'Approve')
+      }
+    }
   }
 }
