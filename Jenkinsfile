@@ -2,6 +2,9 @@ pipeline {
   agent any
   stages {
     stage('Prebuild') {
+      environment {
+        deployPassed = 'true'
+      }
       steps {
         sh 'echo "Starting..."'
       }
@@ -15,7 +18,7 @@ pipeline {
     }
     stage('Functional Test - CAPI') {
       when {
-        environment name: 'deployPassed', value:'true'
+        environment name: 'deployPassed', value: 'true'
       }
       steps {
         sh '/usr/bin/mvn clean test'
