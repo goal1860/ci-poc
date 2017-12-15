@@ -13,9 +13,14 @@ pipeline {
         echo "Deployed successfully."'''
       }
     }
-    stage('Functional Test') {
+    stage('Functional Test - CAPI') {
       steps {
         sh '/usr/bin/mvn clean test'
+      }
+    }
+    stage('Approve') {
+      steps {
+        input 'Can we promote it further?'
       }
     }
   }
