@@ -14,6 +14,9 @@ pipeline {
       }
     }
     stage('Functional Test - CAPI') {
+      when {
+        environment name: 'deployPassed', value:'true'
+      }
       steps {
         sh '/usr/bin/mvn clean test'
       }
