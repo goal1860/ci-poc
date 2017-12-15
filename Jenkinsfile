@@ -49,7 +49,7 @@ pipeline {
     }
     stage('Approve Performance Tests') {
       steps {
-        input(message: 'Do we approve the performance test rusult?', ok: 'Approve')
+        input(message: 'Do we approve the performance test result?', ok: 'Approve')
       }
     }
   }
