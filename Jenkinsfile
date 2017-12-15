@@ -18,9 +18,28 @@ pipeline {
         sh '/usr/bin/mvn clean test'
       }
     }
-    stage('Approve') {
+    stage('Approve CAPI') {
       steps {
-        input 'Can we promote it further?'
+        input 'Can we approve CAPI test result?'
+      }
+    }
+    stage('Run Shop Tests') {
+      parallel {
+        stage('Run Shop Tests') {
+          steps {
+            sh 'echo "Running shop tests"'
+          }
+        }
+        stage('Run Orion Tests') {
+          steps {
+            sh 'echo "Running Orion tests."'
+          }
+        }
+      }
+    }
+    stage('Approve Dependencies') {
+      steps {
+        input(message: 'Can we approve dependency tests?', ok: 'Approve')
       }
     }
   }
