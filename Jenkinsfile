@@ -17,8 +17,9 @@ pipeline {
       steps {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
-        echo "Deployed successfully."'''
+        echo "Deployed successfully."
         ${DP_OK}="pass"
+        '''
       }
     }
     stage('Functional Test - CAPI') {
