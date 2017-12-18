@@ -1,10 +1,16 @@
 pipeline {
   agent any
+  parameters {
+          choice(
+              // choices are a string of newline separated values
+              // https://issues.jenkins-ci.org/browse/JENKINS-41180
+              choices: 'pass\fail',
+              default: 'fail',
+              description: 'Deployment successful?',
+              name: 'DP_OK')
+      }
   stages {
     stage('Prebuild') {
-      environment {
-        deployPassed = 'true'
-      }
       steps {
         sh 'echo "Starting..."'
       }
@@ -14,11 +20,13 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."'''
+
       }
     }
     stage('Functional Test - CAPI') {
       when {
-        environment name: 'deployPassed', value: 'true'
+
+          expression { params.DP_OK == 'pass' }
       }
       steps {
         sh '/usr/bin/mvn clean test'
