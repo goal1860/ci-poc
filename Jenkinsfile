@@ -1,12 +1,5 @@
 pipeline {
   agent any
-  parameters {
-          string(
-
-              defaultValue: 'fail',
-              description: 'Deployment successful?',
-              name: 'DP_OK')
-      }
   stages {
     stage('Prebuild') {
       steps {
@@ -18,7 +11,6 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."
-        echo ${DP_OK}
         DP_OK=pass
         echo ${DP_OK}
         '''
@@ -26,7 +18,6 @@ pipeline {
     }
     stage('Functional Test - CAPI') {
       when {
-
           expression { DP_OK == 'pass' }
       }
       steps {
