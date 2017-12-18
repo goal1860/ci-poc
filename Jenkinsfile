@@ -5,7 +5,6 @@ pipeline {
               // choices are a string of newline separated values
               // https://issues.jenkins-ci.org/browse/JENKINS-41180
               choices: 'pass\fail',
-              default: 'fail',
               description: 'Deployment successful?',
               name: 'DP_OK')
       }
