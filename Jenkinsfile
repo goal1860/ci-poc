@@ -18,14 +18,14 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."
-        ${DP_OK}="pass"
+        DP_OK=pass
         '''
       }
     }
     stage('Functional Test - CAPI') {
       when {
 
-          expression { params.DP_OK == 'pass' }
+          expression { DP_OK == 'pass' }
       }
       steps {
         sh '/usr/bin/mvn clean test'
