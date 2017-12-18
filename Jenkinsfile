@@ -1,10 +1,9 @@
 pipeline {
   agent any
   parameters {
-          choice(
-              // choices are a string of newline separated values
-              // https://issues.jenkins-ci.org/browse/JENKINS-41180
-              choices: 'pass\fail',
+          string(
+
+              defaultValue: 'fail',
               description: 'Deployment successful?',
               name: 'DP_OK')
       }
@@ -19,7 +18,7 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."'''
-
+        ${DP_OK}="pass"
       }
     }
     stage('Functional Test - CAPI') {
