@@ -11,9 +11,15 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."
-        TEST_OK=pass
+        TEST_OK='pass'
         echo ${TEST_OK}
+        echo ${TEST_OK} >> buildResults.out
+        set >> allVars.txt
         '''
+        script {
+          // trim removes leading and trailing whitespace from the string
+          TEST_OK = readfile(buildResults.out).trim()
+        }
       }
     }
     stage('Functional Test - CAPI') {
