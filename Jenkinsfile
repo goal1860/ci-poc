@@ -18,9 +18,9 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."
-        echo ${DB_OK}
+        echo ${DP_OK}
         DP_OK=pass
-        echo ${DB_OK}
+        echo ${DP_OK}
         '''
       }
     }
