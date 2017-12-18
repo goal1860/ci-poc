@@ -18,7 +18,7 @@ pipeline {
         '''
         script {
           // trim removes leading and trailing whitespace from the string
-          TEST_OK = readfile(buildResults.out).trim()
+          TEST_OK = readfile("buildResults.out").trim()
         }
       }
     }
