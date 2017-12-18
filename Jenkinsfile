@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Prebuild') {
       steps {
-        sh 'echo "Starting..."'
+        sh 'echo "Starting...."'
       }
     }
     stage('Deploy to RC') {
@@ -18,7 +18,10 @@ pipeline {
     }
     stage('Functional Test - CAPI') {
       when {
-          expression { TEST_OK == 'pass' }
+        expression {
+          TEST_OK == 'pass'
+        }
+        
       }
       steps {
         sh '/usr/bin/mvn clean test'
