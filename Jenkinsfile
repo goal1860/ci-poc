@@ -11,19 +11,20 @@ pipeline {
         sh '''echo "Deploying to RC."
         echo "Doing health check..."
         echo "Deployed successfully."
-        TEST_OK='pass'
+        TEST_OK=\'pass\'
         echo ${TEST_OK}
         echo ${TEST_OK} > buildResults.out
         set > allVars.txt
         '''
         script {
-          // trim removes leading and trailing whitespace from the string
           TEST_OK = readFile("buildResults.out").trim()
         }
+        
         sh '''echo "results are:"
         echo ${TEST_OK}
         '''
         echo "${TEST_OK}"
+        input(message: 'What is result of deployment?', id: 'rc_dep', ok: 'Pass')
       }
     }
     stage('Functional Test - CAPI') {
