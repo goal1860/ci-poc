@@ -34,12 +34,9 @@ pipeline {
       }
       steps {
         script {
-          env.AT_RC = 'fail'
-        }
-        script {
           AT_RC=input(
             message: 'Do you want to CAPI test pass?', id: 'AT_RC', ok: 'Submit',
-            parameters:[choice(name: 'AT_RC', choices: 'pass\nfail', description: 'What is result of deployment?')]
+            parameters:[choice(name: 'AT_RC', choices: 'pass\nfail', description: 'Select pass the test will pass.')]
           )
           echo ("${AT_RC}")
         }
