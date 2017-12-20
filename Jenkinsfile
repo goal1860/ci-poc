@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'echo "Starting..."'
+        sh 'echo "Starting...."'
       }
     }
     stage('Deploy to RC') {
@@ -30,6 +30,7 @@ pipeline {
         script {
           env.AT_RC = 'fail'
         }
+        
         sh '/usr/bin/mvn clean test'
       }
       post {
