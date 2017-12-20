@@ -4,6 +4,11 @@ pipeline {
     stage('Init') {
       steps {
         sh 'echo "Starting...."'
+      }
+    }
+    stage('Deploy to RC') {
+      steps {
+        sh 'echo "Deploying to RC."'
         script {
           env.DEP_RC_OK=input(
             message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Pass',
@@ -11,12 +16,17 @@ pipeline {
           )
           echo ("${env.DEP_RC_OK}")
         }
-        
       }
     }
-    stage('Deploy to RC') {
+    stage('Functional Test - CAPI') {
+      when {
+        expression {
+          env.DEP_RC_OK == 'pass'
+        }
+
+      }
       steps {
-        sh 'echo "Deploying to RC."'
+        sh '/usr/bin/mvn clean test'
       }
     }
   }
