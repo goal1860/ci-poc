@@ -11,7 +11,7 @@ pipeline {
         sh 'echo "Deploying to RC."'
         script {
           env.DEP_RC_OK=input(
-            message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Pass',
+            message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Submit',
             parameters:[choice(name: 'DEP_RC_OK', choices: 'pass\nfail', description: 'What is result of deployment?')]
           )
           echo ("${env.DEP_RC_OK}")
