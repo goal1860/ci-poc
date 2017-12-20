@@ -12,18 +12,23 @@ pipeline {
         sh 'echo "Done."'
       }
       post {
-          success {
-              script {
-                env.DEP_RC = 'pass'
-              }
+        success {
+          script {
+            env.DEP_RC = 'pass'
           }
-
-          failure {
-              script {
-                env.DEP_RC = 'fail'
-              }
-          }
+          
+          
         }
+        
+        failure {
+          script {
+            env.DEP_RC = 'fail'
+          }
+          
+          
+        }
+        
+      }
     }
     stage('Functional Test - CAPI') {
       when {
@@ -40,7 +45,10 @@ pipeline {
           )
           echo ("${env.AT}")
         }
-        sh ("/usr/bin/mvn clean test -Dresult=${env.AT}")
+        
+        sh "/usr/bin/mvn clean test -Dresult=${env.AT}"
+        sh '''mvn_result=$?
+exit ${mvn_result}'''
       }
       post {
         always {
