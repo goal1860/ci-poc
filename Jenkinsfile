@@ -27,6 +27,9 @@ pipeline {
         
       }
       steps {
+        script {
+          env.AT_RC = 'fail'
+        }
         sh '/usr/bin/mvn clean test'
       }
       post {
@@ -37,7 +40,7 @@ pipeline {
         
         success {
           script {
-            env.AT_RC == 'pass'
+            env.AT_RC = 'pass'
           }
           
           
@@ -45,7 +48,7 @@ pipeline {
         
         failure {
           script {
-            env.AT_RC == 'fail'
+            env.AT_RC = 'fail'
           }
           
           
