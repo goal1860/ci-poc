@@ -8,7 +8,7 @@ pipeline {
     }
     stage('Deploy to RC') {
       steps {
-        sh '"Deploying to RC."'
+        sh 'echo "Deploying to RC."'
       }
     }
   }
