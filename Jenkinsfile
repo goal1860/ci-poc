@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'echo "Starting....."'
+        sh 'echo "Starting...."'
       }
     }
     stage('Deploy to RC') {
@@ -19,7 +19,6 @@ pipeline {
         
       }
     }
-
     stage('Functional Test - CAPI') {
       when {
         expression {
@@ -33,26 +32,34 @@ pipeline {
       post {
         always {
           junit '**/target/*.xml'
+          
         }
+        
         success {
           script {
             env.AT_RC == 'pass'
           }
+          
+          
         }
+        
         failure {
           junit '**/target/*.png'
           script {
             env.AT_RC == 'fail'
           }
+          
+          
         }
+        
       }
     }
-
     stage('Dependency Tests') {
       when {
         expression {
           env.AT_RC == 'pass'
         }
+        
       }
       parallel {
         stage('Run Shop Tests') {
