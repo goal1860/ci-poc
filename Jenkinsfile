@@ -58,6 +58,7 @@ exit ${mvn_result}'''
         }
         
         success {
+          echo "Test passed."
           script {
             env.AT_RC = 'pass'
           }
@@ -66,6 +67,7 @@ exit ${mvn_result}'''
         }
         
         failure {
+          echo "Test failed."
           script {
             env.AT_RC = 'fail'
           }
