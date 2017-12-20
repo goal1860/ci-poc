@@ -6,7 +6,7 @@
 
     <groupId>com.viator</groupId>
     <artifactId>ci-poc</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${git.branch}</version>
 
 
 </project>
