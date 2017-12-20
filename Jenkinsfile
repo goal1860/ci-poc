@@ -44,7 +44,6 @@ pipeline {
         }
         
         failure {
-          junit '**/target/*.png'
           script {
             env.AT_RC == 'fail'
           }
