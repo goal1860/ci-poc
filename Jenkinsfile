@@ -87,12 +87,41 @@ pipeline {
           steps {
             sh 'echo "Running shop tests."'
           }
+          post {
+            failure {
+              echo "Shop Test failed."
+              script {
+                env.DT_RC = 'fail'
+              }
+            }
+          }
         }
         stage('Run Orion Tests') {
           steps {
             sh 'echo "Running Orion tests."'
           }
+          post {
+            failure {
+              echo "Orion Test failed."
+              script {
+                env.DT_RC = 'fail'
+              }
+            }
+          }
         }
+      }
+    }
+
+    stage('Performance Tests') {
+      when {
+        expression {
+          env.DT_RC != 'fail'
+        }
+
+      }
+      steps {
+        sh 'echo "Running performance tests."'
+
       }
     }
 
@@ -147,7 +176,7 @@ pipeline {
 
       }
       steps {
-        sh 'Rolling back the release from canary box.'
+        sh 'echo "Rolling back the release from canary box."'
 
       }
     }
@@ -160,7 +189,7 @@ pipeline {
 
       }
       steps {
-        sh 'Deploy to all production instances.'
+        sh 'echo "Deploy to all production instances."'
 
       }
     }
