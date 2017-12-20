@@ -9,16 +9,21 @@ pipeline {
     stage('Deploy to RC') {
       steps {
         sh 'echo "Deploying to RC."'
-        script {
-          env.DEP_RC=input(
-            message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Submit',
-            parameters:[choice(name: 'DEP_RC_OK', choices: 'pass\nfail', description: 'What is result of deployment?')]
-          )
-          echo ("${env.DEP_RC}")
-        }
-        
+        sh 'echo "Done."'
+      }
+      success {
+          script {
+            env.DEP_RC = 'pass'
+          }
+      }
+
+      failure {
+          script {
+            env.DEP_RC = 'fail'
+          }
       }
     }
+
     stage('Functional Test - CAPI') {
       when {
         expression {
@@ -30,8 +35,14 @@ pipeline {
         script {
           env.AT_RC = 'fail'
         }
-        
-        sh '/usr/bin/mvn clean test'
+        script {
+          AT_RC=input(
+            message: 'Do you want to CAPI test pass?', id: 'AT_RC', ok: 'Submit',
+            parameters:[choice(name: 'AT_RC', choices: 'pass\nfail', description: 'What is result of deployment?')]
+          )
+          echo ("${AT_RC}")
+        }
+        sh '/usr/bin/mvn clean test -Dresult=${AT_RC}'
       }
       post {
         always {
@@ -55,11 +66,6 @@ pipeline {
           
         }
         
-      }
-    }
-    stage('Output') {
-      steps {
-        echo "${env.AT_RC}"
       }
     }
     stage('Dependency Tests') {

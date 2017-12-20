@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 public class ViatorDummyTest1 {
     @Test
     public void test1() {
-        Assert.assertTrue(true);
+        String result = System.getProperty("result");
+        Assert.assertTrue("pass".equals(result));
     }
 }
