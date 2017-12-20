@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'echo "Starting....."'
+        sh 'echo "Starting...."'
         script {
           env.DEP_RC_OK=input(
             message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Pass',
