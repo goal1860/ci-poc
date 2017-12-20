@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'echo "Starting...."'
+        sh 'echo "Starting..."'
       }
     }
     stage('Deploy to RC') {
@@ -54,11 +54,10 @@ pipeline {
       }
     }
     stage('Output') {
-        steps {
-            echo ("${env.AT_RC}")
-        }
+      steps {
+        echo "${env.AT_RC}"
+      }
     }
-
     stage('Dependency Tests') {
       when {
         expression {
