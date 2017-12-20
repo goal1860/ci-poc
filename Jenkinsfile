@@ -10,5 +10,10 @@ pipeline {
         echo "${env.DEP_RC_OK}"
       }
     }
+    stage('Deploy to RC') {
+      steps {
+        sh 'echo "Deploying to RC."'
+      }
+    }
   }
 }
