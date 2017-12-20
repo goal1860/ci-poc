@@ -6,5 +6,10 @@ pipeline {
         sh 'echo "Starting..."'
       }
     }
+    stage('Deploy to RC') {
+      steps {
+        sh '"Deploying to RC."'
+      }
+    }
   }
 }
