@@ -40,7 +40,7 @@ pipeline {
           )
           echo ("${env.AT}")
         }
-        sh ("/usr/bin/mvn clean test -Dresult=${env.AT};exit $?")
+        sh ("/usr/bin/mvn clean test -Dresult=${env.AT}")
       }
       post {
         always {
