@@ -138,5 +138,32 @@ pipeline {
         }
       }
     }
+
+    stage('Roll back') {
+      when {
+        expression {
+          env.DEP_CANARY == 'fail'
+        }
+
+      }
+      steps {
+        sh 'Rolling back the release from canary box.'
+
+      }
+    }
+
+    stage('Deploy to Prod') {
+      when {
+        expression {
+          env.DEP_CANARY == 'pass'
+        }
+
+      }
+      steps {
+        sh 'Deploy to all production instances.'
+
+      }
+    }
+
   }
 }
