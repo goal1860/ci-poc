@@ -47,9 +47,7 @@ pipeline {
         }
         
         sh "/usr/bin/mvn clean test -Dresult=${env.AT}"
-        sh '''mvn_result=$?
-        echo "Return result: ${mvn_result}"
-exit ${mvn_result}'''
+
       }
       post {
         always {
@@ -94,6 +92,44 @@ exit ${mvn_result}'''
           steps {
             sh 'echo "Running Orion tests."'
           }
+        }
+      }
+
+      stage('Deploy to Prelive') {
+        steps {
+          sh 'echo "Deploying to Prelive."'
+          sh 'echo "Done."'
+        }
+        post {
+          success {
+            script {
+              env.DEP_PRELIVE = 'pass'
+            }
+
+
+          }
+
+          failure {
+            script {
+              env.DEP_PRELIVE = 'fail'
+            }
+
+
+          }
+
+        }
+      }
+
+      stage('Canary Deployment') {
+        when {
+            expression {
+              env.DEP_PRELIVE == 'pass'
+            }
+
+          }
+        steps {
+          sh 'echo "Deploying to canary instances."'
+          sh 'echo "Done."'
         }
       }
     }
