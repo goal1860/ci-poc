@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Init') {
       steps {
-        sh 'echo "Starting...."'
+        sh 'echo "Starting....."'
       }
     }
     stage('Deploy to RC') {
@@ -16,6 +16,7 @@ pipeline {
           )
           echo ("${env.DEP_RC_OK}")
         }
+        
       }
     }
     stage('Functional Test - CAPI') {
@@ -23,7 +24,7 @@ pipeline {
         expression {
           env.DEP_RC_OK == 'pass'
         }
-
+        
       }
       steps {
         sh '/usr/bin/mvn clean test'
