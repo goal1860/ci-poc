@@ -34,13 +34,13 @@ pipeline {
       }
       steps {
         script {
-          AT_RC=input(
-            message: 'Do you want to CAPI test pass?', id: 'AT_RC', ok: 'Submit',
-            parameters:[choice(name: 'AT_RC', choices: 'pass\nfail', description: 'Select pass the test will pass.')]
+          env.AT=input(
+            message: 'Do you want to CAPI test pass?', id: 'AT', ok: 'Submit',
+            parameters:[choice(name: 'AT', choices: 'pass\nfail', description: 'Select pass the test will pass.')]
           )
-          echo ("${AT_RC}")
+          echo ("${env.AT}")
         }
-        sh ('/usr/bin/mvn clean test -Dresult=${AT_RC}')
+        sh ('/usr/bin/mvn clean test -Dresult=${env.AT}')
       }
       post {
         always {
