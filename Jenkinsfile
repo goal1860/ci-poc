@@ -35,11 +35,15 @@ pipeline {
           junit '**/target/*.xml'
         }
         success {
-          env.AT_RC == 'pass'
+          script {
+            env.AT_RC == 'pass'
+          }
         }
         failure {
           junit '**/target/*.png'
-          env.AT_RC == 'fail'
+          script {
+            env.AT_RC == 'fail'
+          }
         }
       }
     }
