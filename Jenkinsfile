@@ -118,5 +118,25 @@ pipeline {
 
       }
     }
+
+    stage('Deploy to canary boxes') {
+      when {
+        expression {
+          env.DEP_PRELIVE == 'pass'
+        }
+
+      }
+      steps {
+        sh 'echo "Deploying to canary boxes."'
+        sh 'echo "Done."'
+        script {
+          env.DEP_CANARY=input(
+            message: 'Does canary verification pass?', id: 'DEP_CANARY', ok: 'Submit',
+            parameters:[choice(name: 'DEP_CANARY', choices: 'pass\nfail', description: 'oes canary verification pass?')]
+          )
+          echo ("${env.DEP_CANARY}")
+        }
+      }
+    }
   }
 }
