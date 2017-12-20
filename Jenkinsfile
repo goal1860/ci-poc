@@ -40,7 +40,7 @@ pipeline {
           )
           echo ("${AT_RC}")
         }
-        sh '/usr/bin/mvn clean test -Dresult=${AT_RC}'
+        sh ('/usr/bin/mvn clean test -Dresult=' + ${AT_RC})
       }
       post {
         always {
