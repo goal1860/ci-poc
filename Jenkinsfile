@@ -11,19 +11,20 @@ pipeline {
         sh 'echo "Deploying to RC."'
         sh 'echo "Done."'
       }
-      success {
-          script {
-            env.DEP_RC = 'pass'
+      post {
+          success {
+              script {
+                env.DEP_RC = 'pass'
+              }
           }
-      }
 
-      failure {
-          script {
-            env.DEP_RC = 'fail'
+          failure {
+              script {
+                env.DEP_RC = 'fail'
+              }
           }
-      }
+        }
     }
-
     stage('Functional Test - CAPI') {
       when {
         expression {
