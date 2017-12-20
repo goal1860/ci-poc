@@ -47,9 +47,7 @@ pipeline {
         }
         
         sh "/usr/bin/mvn clean test -Dresult=${env.AT}"
-        sh '''mvn_result=$?
-        echo "Return result: ${mvn_result}"
-exit ${mvn_result}'''
+
       }
       post {
         always {
