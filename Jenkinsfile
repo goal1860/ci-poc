@@ -10,24 +10,57 @@ pipeline {
       steps {
         sh 'echo "Deploying to RC."'
         script {
-          env.DEP_RC_OK=input(
+          env.DEP_RC=input(
             message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Submit',
             parameters:[choice(name: 'DEP_RC_OK', choices: 'pass\nfail', description: 'What is result of deployment?')]
           )
-          echo ("${env.DEP_RC_OK}")
+          echo ("${env.DEP_RC}")
         }
         
       }
     }
+
     stage('Functional Test - CAPI') {
       when {
         expression {
-          env.DEP_RC_OK == 'pass'
+          env.DEP_RC == 'pass'
         }
         
       }
       steps {
         sh '/usr/bin/mvn clean test'
+      }
+      post {
+        always {
+          junit '**/target/*.xml'
+        }
+        success {
+          env.AT_RC == 'pass'
+        }
+        failure {
+          junit '**/target/*.png'
+          env.AT_RC == 'fail'
+        }
+      }
+    }
+
+    stage('Dependency Tests') {
+      when {
+        expression {
+          env.AT_RC == 'pass'
+        }
+      }
+      parallel {
+        stage('Run Shop Tests') {
+          steps {
+            sh 'echo "Running shop tests."'
+          }
+        }
+        stage('Run Orion Tests') {
+          steps {
+            sh 'echo "Running Orion tests."'
+          }
+        }
       }
     }
   }
