@@ -5,8 +5,9 @@ pipeline {
       steps {
         sh 'echo "Starting...."'
         script {
-            input(message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Pass')
+          input(message: 'What is result of deployment?', id: 'DEP_RC_OK', ok: 'Pass')
         }
+        
         echo "${env.DEP_RC_OK}"
       }
     }
