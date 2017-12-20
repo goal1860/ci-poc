@@ -95,5 +95,28 @@ pipeline {
         }
       }
     }
+
+    stage('Deploy to Prelive') {
+      steps {
+        sh 'echo "Deploying to Prelive."'
+        sh 'echo "Done."'
+      }
+      post {
+        success {
+          script {
+            env.DEP_PRELIVE = 'pass'
+          }
+
+        }
+
+        failure {
+          script {
+            env.DEP_PRELIVE = 'fail'
+          }
+
+        }
+
+      }
+    }
   }
 }
