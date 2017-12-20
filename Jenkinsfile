@@ -53,6 +53,12 @@ pipeline {
         
       }
     }
+    stage('Output') {
+        steps {
+            echo ("${env.AT_RC}")
+        }
+    }
+
     stage('Dependency Tests') {
       when {
         expression {
