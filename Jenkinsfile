@@ -9,9 +9,9 @@ pipeline {
           parameters:[
             [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env']
           ]
+          )
           echo DEP_RC_OK
-        )
-      }
+        }
       
       echo DEP_RC_OK
     }
