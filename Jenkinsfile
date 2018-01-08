@@ -6,42 +6,62 @@ pipeline {
         sh 'echo "Starting...."'
       }
     }
-    stage('Deploy to RC') {
+
+    stage('Deploy to RC canary') {
+
       steps {
-        sh 'echo "Deploying to RC."'
+        sh 'echo "Deploying to RC canary boxes."'
         sh 'echo "Done."'
-      }
-      post {
-        success {
-          script {
-            env.DEP_RC = 'pass'
-          }
-          
-          
-        }
-        
-        failure {
-          script {
-            env.DEP_RC = 'fail'
-          }
-          
-          
-        }
-        
+
       }
     }
-    stage('Functional Test - CAPI') {
+
+    stage('Verify RC canary') {
+        sh 'echo "Running smoke testing RC canary."'
+        sh 'echo "Smoke testing completed."'
+        sh 'echo "Monitoring RC canary."'
+        steps {
+            script {
+              env.DEP_RC_CANARY=input(
+                message: 'Does canary verification pass?', id: 'DEP_RC_CANARY', ok: 'Submit',
+                parameters:[choice(name: 'DEP_RC_CANARY', choices: 'pass\nfail', description: 'Does canary verification pass?')]
+              )
+              echo ("${env.DEP_RC_CANARY}")
+            }
+        }
+    }
+    stage('Roll back RC canary') {
       when {
         expression {
-          env.DEP_RC == 'pass'
+          env.DEP_RC_CANARY == 'fail'
         }
-        
+
       }
+      steps {
+        sh 'echo "Rolling back the release from RC canary."'
+
+      }
+    }
+
+    stage('Promote release to remaining RC') {
+      when {
+        expression {
+          env.DEP_RC_CANARY == 'pass'
+        }
+
+      }
+      steps {
+        sh 'echo "Promoting release to remaining RC."'
+        sh 'echo "Done."'
+      }
+    }
+
+    stage('Functional Test - CAPI') {
       steps {
         script {
           env.AT=input(
-            message: 'Do you want to CAPI test pass?', id: 'AT', ok: 'Submit',
-            parameters:[choice(name: 'AT', choices: 'pass\nfail', description: 'Select pass the test will pass.')]
+            message: 'Do you want to CAPI test pass for demo?', id: 'AT', ok: 'Submit',
+            parameters:[choice(name: 'AT', choices: 'pass\nfail', description: 'Select Pass then the tests will pass.')]
           )
           echo ("${env.AT}")
         }
