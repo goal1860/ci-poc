@@ -92,8 +92,6 @@ pipeline {
           }
 
           archiveArtifacts '**/target/surefire-reports/*'
-          archiveArtifacts '**/target/screenshots/*.png'
-
         }
 
       }
