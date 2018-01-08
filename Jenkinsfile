@@ -17,10 +17,11 @@ pipeline {
     }
 
     stage('Verify RC canary') {
-        sh 'echo "Running smoke testing RC canary."'
-        sh 'echo "Smoke testing completed."'
-        sh 'echo "Monitoring RC canary."'
+
         steps {
+            sh 'echo "Running smoke testing RC canary."'
+            sh 'echo "Smoke testing completed."'
+            sh 'echo "Monitoring RC canary."'
             script {
               env.DEP_RC_CANARY=input(
                 message: 'Does canary verification pass?', id: 'DEP_RC_CANARY', ok: 'Submit',
