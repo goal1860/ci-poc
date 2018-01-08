@@ -74,7 +74,8 @@ pipeline {
       post {
         always {
           junit '**/target/surefire-reports/**/*.xml'
-
+          archiveArtifacts artifacts: '**/target/surefire-reports', fingerprint: true
+          archiveArtifacts artifacts: '**/target/screenshots/*.png', fingerprint: true
         }
 
         success {
