@@ -40,8 +40,8 @@ pipeline {
       }
       steps {
         sh 'echo "Rolling back the release from RC canary."'
-        currentBuild.result="FAIL"
-        return
+        currentBuild.result="FAILURE"
+        sh 'exit 1'
 
       }
     }
