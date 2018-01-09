@@ -146,43 +146,20 @@ pipeline {
       }
     }
 
-    stage('Deploy to Prelive') {
+    stage('Deploy to canary') {
       steps {
-        sh 'echo "Deploying to Prelive."'
+        sh 'echo "Deploying to canary."'
         sh 'echo "Done."'
-      }
-      post {
-        success {
-          script {
-            env.DEP_PRELIVE = 'pass'
-          }
-
-        }
-
-        failure {
-          script {
-            env.DEP_PRELIVE = 'fail'
-          }
-
-        }
-
       }
     }
 
-    stage('Deploy to canary boxes') {
-      when {
-        expression {
-          env.DEP_PRELIVE == 'pass'
-        }
-
-      }
+    stage('Monitoring Canary') {
       steps {
-        sh 'echo "Deploying to canary boxes."'
-        sh 'echo "Done."'
+        sh 'echo "Monitoring Canary"'
         script {
           env.DEP_CANARY=input(
             message: 'Does canary verification pass?', id: 'DEP_CANARY', ok: 'Submit',
-            parameters:[choice(name: 'DEP_CANARY', choices: 'pass\nfail', description: 'oes canary verification pass?')]
+            parameters:[choice(name: 'DEP_CANARY', choices: 'pass\nfail', description: 'Does canary verification pass?')]
           )
           echo ("${env.DEP_CANARY}")
         }
@@ -198,22 +175,49 @@ pipeline {
       }
       steps {
         sh 'echo "Rolling back the release from canary box."'
-
+        sh 'exit 1'
       }
     }
 
-    stage('Deploy to Prod') {
-      when {
-        expression {
-          env.DEP_CANARY == 'pass'
-        }
-
-      }
+    stage('Promote to Prod remaining') {
       steps {
         sh 'echo "Deploy to all production instances."'
 
       }
     }
 
+    stage('Smoke Testing') {
+      steps {
+        sh 'echo "Running smoke testing."'
+        sh 'echo "Done"'
+        script {
+          env.FINAL=input(
+            message: 'What is final decision?', id: 'FINAL', ok: 'Submit',
+            parameters:[choice(name: 'FINAL', choices: 'yes\nno', description: 'Finalise the release?')]
+          )
+          echo ("${env.FINAL}")
+        }
+      }
+    }
+
+    stage('Roll back') {
+      when {
+        expression {
+          env.final == 'no'
+        }
+
+      }
+      steps {
+        sh 'echo "Rolling back the release from Prod based on final decision."'
+        sh 'exit 1'
+      }
+    }
+
+    stage('Completion') {
+      steps {
+        sh 'echo "Merging branch."'
+        sh 'echo "Update Jira status."'
+      }
+    }
   }
 }
