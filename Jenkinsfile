@@ -200,10 +200,10 @@ pipeline {
       }
     }
 
-    stage('Roll back') {
+    stage('Roll back from final decision') {
       when {
         expression {
-          env.final == 'no'
+          env.FINAL == 'no'
         }
 
       }
